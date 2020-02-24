@@ -1,6 +1,6 @@
 const fs = require('fs');
 const readline = require('readline');
-const {google} = require('googleapis');
+const {google: mygoogle} = require('googleapis');
 
 function readDocs() {
 
@@ -27,7 +27,7 @@ function readDocs() {
  */
 function authorize(credentials, callback) {
     const {client_secret, client_id, redirect_uris} = credentials.installed;
-    const oAuth2Client = new google.auth.OAuth2(
+    const oAuth2Client = new mygoogle.auth.OAuth2(
         client_id, client_secret, redirect_uris[0]);
 
     // Check if we have previously stored a token.
@@ -41,7 +41,7 @@ function authorize(credentials, callback) {
 /**
  * Get and store new token after prompting for user authorization, and then
  * execute the given callback with the authorized OAuth2 client.
- * @param {google.auth.OAuth2} oAuth2Client The OAuth2 client to get token for.
+ * @param {mygoogle.auth.OAuth2} oAuth2Client The OAuth2 client to get token for.
  * @param {getEventsCallback} callback The callback for the authorized client.
  */
 function getNewToken(oAuth2Client, callback) {
@@ -72,21 +72,16 @@ function getNewToken(oAuth2Client, callback) {
 /**
  * Prints the title of a sample doc:
  * https://docs.google.com/document/d/195j9eDD3ccgjQRttHhJPymLJUCOUjs-jmwTrekvdjFE/edit
- * @param {google.auth.OAuth2} auth The authenticated Google OAuth 2.0 client.
+ * @param {mygoogle.auth.OAuth2} auth The authenticated Google OAuth 2.0 client.
  */
 function printDocTitle(auth) {
-<h1>Hello World!</h1>
-    We are using node <script>document.write(process.versions.node)</script>,
-    Chrome <script>document.write(process.versions.chrome)</script>,
-    and Electron <script>document.write(process.versions.electron)</script>.
 
-
-
-    const docs = google.docs({version: 'v1', auth});
+    const docs = mygoogle.docs({version: 'v1', auth});
     docs.documents.get({
         documentId: '195j9eDD3ccgjQRttHhJPymLJUCOUjs-jmwTrekvdjFE',
     }, (err, res) => {
         if (err) return console.log('The API returned an error: ' + err);
         console.log(`The title of the document is: ${res.data.title}`);
     });
+    global.sharedObj = {myvar: `The title of the document is: ${res.data.title}`};
 }

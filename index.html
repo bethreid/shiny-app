@@ -7,8 +7,10 @@
     <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
   </head>
   <body>
-    <script>
-      require('./google')
-    </script>
+
+  <script>
+    const {remote} = require('electron');
+    document.write('<p>myvar: ' + remote.getGlobal('sharedObj').myvar + '</p>');
+  </script>
   </body>
 </html>
